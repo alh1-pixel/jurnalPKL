@@ -1,4 +1,5 @@
 import Link from "next/link";
+import KartuJurnal from "@/components/KartuJurnal";
 
 export default async function Beranda() {
   return (
@@ -9,7 +10,7 @@ export default async function Beranda() {
           Mari mulai membuat catatan kegiatan pklmu.
         </p>
         <Link
-          href="/event"
+          href="/masuk"
           className="mt-6 inline-block rounded-lg bg-blue-600 px-5 py-2.5 font-medium text-white hover:bg-blue-700"
         >
           Lihat semua jurnal

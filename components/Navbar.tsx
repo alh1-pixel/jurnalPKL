@@ -4,8 +4,9 @@ import { usePathname } from "next/navigation";
 
 const menu = [
   { href: "/", teks: "Beranda" },
-  { href: "/jurnal", teks: "Event" },
-  { href: "/admin", teks: "Admin" },
+  { href: "masuk", teks: "Murid" },
+  { href: "/jurnal", teks: "Jurnal" },
+  { href: "/login", teks: "Admin" },
 ];
 
 export default function Navbar() {
