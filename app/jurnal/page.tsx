@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import { Suspense } from "react";
 
 import KartuJurnal, { type StatusJurnal } from "@/components/KartuJurnal";
 import { ambilJurnalMurid } from "@/data/ambil";
@@ -25,7 +26,21 @@ function formatTanggal(tanggal: string) {
   }).format(new Date(`${tanggal}T00:00:00Z`));
 }
 
-export default async function HalamanJurnalMurid() {
+export default function HalamanJurnalMurid() {
+  return (
+    <Suspense
+      fallback={
+        <section aria-live="polite" className="py-10">
+          Memuat jurnal...
+        </section>
+      }
+    >
+      <KontenJurnalMurid />
+    </Suspense>
+  );
+}
+
+async function KontenJurnalMurid() {
   const sesi = await ambilSesiMurid();
 
   if (!sesi) {
