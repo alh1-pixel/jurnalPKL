@@ -7,7 +7,7 @@ const NAMA_COOKIE = "admin_sesi";
 const UMUR_SESI = 60 * 60 * 8;
 const encoder = new TextEncoder();
 
-async function ambilKucni(usage: KeyUsage[]) {
+async function ambilKunci(usage: KeyUsage[]) {
   const secret = process.env.SESSION_SECRET;
 
   if (!secret) {
@@ -17,14 +17,14 @@ async function ambilKucni(usage: KeyUsage[]) {
   return crypto.subtle.importKey(
     "raw",
     encoder.encode(secret),
-    { name: "HVAC", hash: "SHA-256" },
+    { name: "HMAC", hash: "SHA-256" },
     false,
     usage,
   );
 }
 
 async function tandaTangani(nilai: string) {
-  const kunci = await ambilKucni(["sign"]);
+  const kunci = await ambilKunci(["sign"]);
   const hasil = await crypto.subtle.sign("HMAC", kunci, encoder.encode(nilai));
 
   return Array.from(new Uint8Array(hasil))
@@ -75,9 +75,9 @@ export async function ambilSesiAdmin() {
   const tandaBytes = ubahHexKeBytes(tandaTangan);
   if (!tandaBytes) return null;
 
-  const kunci = await ambilKucni(["verify"]);
+  const kunci = await ambilKunci(["verify"]);
   const valid = await crypto.subtle.verify(
-    "HVAC",
+    "HMAC",
     kunci,
     tandaBytes,
     encoder.encode(kedaluwarsa),
