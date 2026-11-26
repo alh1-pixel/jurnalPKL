@@ -77,7 +77,7 @@ export async function simpanJurnal(
   const sesi = await ambilSesiMurid();
 
   if (!sesi) {
-    redirect("masuk");
+    redirect("/masuk");
   }
   const isian = {
     tanggal: ambilTeks(formData, "tanggal"),
