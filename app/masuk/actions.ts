@@ -1,9 +1,9 @@
 "use server";
 
 import { redirect } from "next/navigation";
-
 import { buatSesiMurid } from "@/lib/sesi-murid";
 import { supabaseAdmin } from "@/lib/supabase-admin";
+import { hapusSesiMurid } from "@/lib/sesi-murid";
 
 export async function masukMurid(formData: FormData) {
   const kode = String(formData.get("kode") ?? "")
@@ -34,4 +34,9 @@ export async function masukMurid(formData: FormData) {
   });
 
   redirect("/jurnal");
+}
+
+export async function keluarMurid() {
+  await hapusSesiMurid();
+  redirect("/masuk");
 }

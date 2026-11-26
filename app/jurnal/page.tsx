@@ -5,6 +5,7 @@ import { Suspense } from "react";
 import KartuJurnal, { type StatusJurnal } from "@/components/KartuJurnal";
 import { ambilJurnalMurid } from "@/data/ambil";
 import { ambilSesiMurid } from "@/lib/sesi-murid";
+import { keluarMurid } from "../masuk/actions";
 
 function labelStatus(status: string): StatusJurnal {
   switch (status) {
@@ -76,6 +77,15 @@ async function KontenJurnalMurid() {
         </Link>
       </section>
 
+      <form action={keluarMurid}>
+        <button
+          className="rounded border px-4 py-2 text-sm hover:bg-slate-50"
+          type="submit"
+        >
+          Keluar
+        </button>
+      </form>
+
       <section
         aria-label="Ringkasan jurnal"
         className="mb-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4"
@@ -101,6 +111,7 @@ async function KontenJurnalMurid() {
             {jurnal.map((item) => (
               <KartuJurnal
                 key={item.id}
+                id={item.id}
                 tanggal={formatTanggal(item.tanggal)}
                 kegiatan={item.kegiatan}
                 kompetensi={item.kompetensi}

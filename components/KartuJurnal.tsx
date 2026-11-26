@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export type StatusJurnal = "Diajukan" | "Disetujui" | "Revisi";
 
 type Props = {
@@ -6,6 +8,7 @@ type Props = {
   kompetensi: string;
   durasi: number;
   status: StatusJurnal;
+  id: number;
 };
 
 const warnaStatus: Record<StatusJurnal, string> = {
@@ -15,6 +18,7 @@ const warnaStatus: Record<StatusJurnal, string> = {
 };
 
 export default function KartuJurnal({
+  id,
   tanggal,
   kegiatan,
   kompetensi,
@@ -32,6 +36,14 @@ export default function KartuJurnal({
       <h3 className="mt-3 font-semibold">{kegiatan}</h3>
       <p className="mt-1 text-sm text-slate-600">{kompetensi}</p>
       <p className="mt-3 text-sm text-slate-500">{durasi} jam</p>
+      {status !== "Disetujui" && (
+        <Link
+          href={`/jurnal/${id}/ubah`}
+          className="mt-4 inline-block text-sm font-medium text-blue-600 hover:underline"
+        >
+          Ubah jurnal
+        </Link>
+      )}
     </article>
   );
 }
