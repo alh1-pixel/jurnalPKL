@@ -4,8 +4,8 @@ import Navbar from "@/components/Navbar";
 import { Suspense } from "react";
 
 export const metadata: Metadata = {
-  title: "EventKu",
-  description: "Katalog dan pemesanan tiket event sekolah",
+  title: "JurnalKu",
+  description: "Tempat mengisi jurnal untuk murid pkl",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
