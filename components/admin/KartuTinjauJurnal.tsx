@@ -41,44 +41,45 @@ export default function KartuTinjauJurnal({
       )}
 
       {jurnal.status === "diajukan" && (
-        <div className="mt-4 flex flex-wrap items-start gap-4 border-t pt-4">
-          <form action={tinjauJurnal}>
-            <input name="jurnalId" type="hidden" value={jurnal.id} />
-            <input name="keputusan" type="hidden" value="disetujui" />
+        <form action={tinjauJurnal} className="mt-4 space-y-3 border-t pt-4">
+          <input name="jurnalId" type="hidden" value={jurnal.id} />
+
+          <label
+            className="block text-sm font-medium"
+            htmlFor={`catatan-${jurnal.id}`}
+          >
+            Catatan revisi
+          </label>
+
+          <textarea
+            className="block min-h-24 w-full resize-y rounded border px-3 py-2 text-sm"
+            id={`catatan-${jurnal.id}`}
+            minLength={5}
+            name="catatan"
+            placeholder="Jelaskan bagian yang perlu diperbaiki"
+            rows={3}
+          />
+
+          <div className="flex flex-wrap gap-3">
             <button
               className="rounded bg-green-700 px-4 py-2 text-sm text-white hover:bg-green-800"
+              name="keputusan"
               type="submit"
+              value="disetujui"
             >
               Setujui
             </button>
-          </form>
 
-          <form action={tinjauJurnal} className="min-w-60 flex-1 space-y-2">
-            <input name="jurnalId" type="hidden" value={jurnal.id} />
-            <input name="keputusan" type="hidden" value="revisi" />
-            <label
-              className="block text-sm font-medium"
-              htmlFor={`catatan-${jurnal.id}`}
-            >
-              Catatan revisi
-            </label>
-            <textarea
-              className="block w-full rounded border px-3 py-2 text-sm"
-              id={`catatan-${jurnal.id}`}
-              minLength={5}
-              name="catatan"
-              placeholder="Jelaskan bagian yang perlu diperbaiki"
-              required
-              rows={2}
-            />
             <button
               className="rounded border border-amber-600 px-4 py-2 text-sm text-amber-800 hover:bg-amber-50"
+              name="keputusan"
               type="submit"
+              value="revisi"
             >
               Minta revisi
             </button>
-          </form>
-        </div>
+          </div>
+        </form>
       )}
     </article>
   );

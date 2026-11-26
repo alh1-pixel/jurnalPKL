@@ -2,6 +2,7 @@ import "server-only";
 
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
+import { connection } from "next/server";
 
 const NAMA_COOKIE = "admin_sesi";
 const UMUR_SESI = 60 * 60 * 8;
@@ -58,6 +59,8 @@ export async function buatSesiAdmin() {
 }
 
 export async function ambilSesiAdmin() {
+  await connection();
+
   const token = (await cookies()).get(NAMA_COOKIE)?.value;
   if (!token) return null;
 

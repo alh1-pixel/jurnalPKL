@@ -6,7 +6,7 @@ const menu = [
   { href: "/", teks: "Beranda" },
   { href: "masuk", teks: "Murid" },
   { href: "/jurnal", teks: "Jurnal" },
-  { href: "/login", teks: "Admin" },
+  { href: "/admin", teks: "Admin" },
 ];
 
 export default function Navbar() {
