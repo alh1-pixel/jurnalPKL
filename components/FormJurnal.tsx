@@ -1,6 +1,7 @@
 "use client";
 
 import { useActionState } from "react";
+import { simpanJurnal, type HasilJurnal } from "@/app/jurnal/baru/actions";
 
 function Galat({ teks }: { teks?: string }) {
   return teks ? <p className="mt-1 text-sm text-red-600">{teks}</p> : null;
