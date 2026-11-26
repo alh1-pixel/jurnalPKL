@@ -1,5 +1,4 @@
 import Link from "next/link";
-import KartuJurnal from "@/components/KartuJurnal";
 
 export default async function Beranda() {
   return (
