@@ -51,14 +51,25 @@ export async function tambahSiswa(formData: FormData) {
   redirect("/admin/siswa?hasil=ditambahkan");
 }
 
-export async function hapusSiswa(formData: FormData) {
+type HasilHapusSiswa = {
+  pesan: string;
+  berhasil: boolean;
+};
+
+export async function hapusSiswa(
+  _state: HasilHapusSiswa,
+  formData: FormData,
+): Promise<HasilHapusSiswa> {
   await pastikanAdmin();
 
   const siswaId = Number(ambilTeks(formData, "siswaId"));
   const konfirmasi = formData.get("konfirmasi") === "on";
 
   if (!Number.isSafeInteger(siswaId) || siswaId <= 0 || !konfirmasi) {
-    redirect("/admin/siswa?hasil=data-tidak-valid");
+    return {
+      pesan: "Permintaan tidak valid. Periksa konfirmasi lalu coba lagi.",
+      berhasil: false,
+    };
   }
 
   const { count, error: errorJurnal } = await supabaseAdmin
@@ -71,7 +82,10 @@ export async function hapusSiswa(formData: FormData) {
   }
 
   if ((count ?? 0) > 0) {
-    redirect("/admin/siswa?hasil=punya-jurnal");
+    return {
+      pesan: "Siswa ini masih memiliki jurnal, jadi tidak dapat dihapus.",
+      berhasil: false,
+    };
   }
 
   const { data, error } = await supabaseAdmin
@@ -81,15 +95,29 @@ export async function hapusSiswa(formData: FormData) {
     .select("id")
     .maybeSingle();
 
+  if (error?.code === "23503") {
+    return {
+      pesan: "Siswa masih memiliki data terkait dan tidak dapat dihapus.",
+      berhasil: false,
+    };
+  }
+
   if (error) {
     throw new Error(`Gagal menghapus siswa: ${error.message}`);
   }
 
   if (!data) {
-    redirect("/admin/siswa?hasil=tidak-ditemukan");
+    return {
+      pesan: "Data siswa tidak ditemukan.",
+      berhasil: false,
+    };
   }
 
   revalidatePath("/admin");
   revalidatePath("/admin/siswa");
-  redirect("/admin/siswa?hasil=dihapus");
+
+  return {
+    pesan: "Data siswa berhasil dihapus.",
+    berhasil: true,
+  };
 }
