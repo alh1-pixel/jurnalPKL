@@ -69,22 +69,24 @@ async function KontenJurnalMurid() {
           </p>
         </div>
 
-        <Link
-          href="/jurnal/baru"
-          className="rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-medium text-white hover:bg-blue-700"
-        >
-          + Tulis jurnal
-        </Link>
-      </section>
+        <div className="ml-auto flex flex-col items-end gap-3">
+          <form action={keluarMurid}>
+            <button
+              className="rounded border px-4 py-2 text-sm hover:bg-slate-50"
+              type="submit"
+            >
+              Keluar
+            </button>
+          </form>
 
-      <form action={keluarMurid}>
-        <button
-          className="rounded border px-4 py-2 text-sm hover:bg-slate-50"
-          type="submit"
-        >
-          Keluar
-        </button>
-      </form>
+          <Link
+            href="/jurnal/baru"
+            className="rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-medium text-white hover:bg-blue-700"
+          >
+            + Tulis jurnal
+          </Link>
+        </div>
+      </section>
 
       <section
         aria-label="Ringkasan jurnal"
