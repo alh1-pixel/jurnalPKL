@@ -8,6 +8,7 @@ type Props = {
   kompetensi: string;
   durasi: number;
   status: StatusJurnal;
+  catatan: string | null;
   id: number;
 };
 
@@ -24,6 +25,7 @@ export default function KartuJurnal({
   kompetensi,
   durasi,
   status,
+  catatan,
 }: Props) {
   return (
     <article className="rounded-xl border bg-white p-4 shadow-sm">
@@ -36,6 +38,11 @@ export default function KartuJurnal({
       <h3 className="mt-3 font-semibold">{kegiatan}</h3>
       <p className="mt-1 text-sm text-slate-600">{kompetensi}</p>
       <p className="mt-3 text-sm text-slate-500">{durasi} jam</p>
+      {status === "Revisi" && catatan && (
+        <p className="mt-3 rounded bg-amber-50 p-3 text-sm text-amber-900">
+          <strong>Catatan revisi:</strong> {catatan}
+        </p>
+      )}
       {status !== "Disetujui" && (
         <Link
           href={`/jurnal/${id}/ubah`}

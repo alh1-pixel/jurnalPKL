@@ -119,6 +119,7 @@ async function KontenJurnalMurid() {
                 kompetensi={item.kompetensi}
                 durasi={item.durasi_jam}
                 status={labelStatus(item.status)}
+                catatan={item.catatan}
               />
             ))}
           </div>
