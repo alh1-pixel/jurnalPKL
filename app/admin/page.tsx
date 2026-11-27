@@ -27,6 +27,7 @@ async function KontenAdmin() {
   const jumlahDisetujui = jurnal.filter(
     (item) => item.status === "disetujui",
   ).length;
+  const jumlahRevisi = jurnal.filter((item) => item.status === "revisi").length;
   const totalJam = jurnal.reduce((jumlah, item) => jumlah + item.durasi_jam, 0);
 
   return (
@@ -62,6 +63,7 @@ async function KontenAdmin() {
         jumlahSiswa={siswa.length}
         jumlahDiajukan={jumlahDiajukan}
         jumlahDisetujui={jumlahDisetujui}
+        jumlahRevisi={jumlahRevisi}
         totalJam={totalJam}
       />
 
