@@ -19,7 +19,6 @@ const awal: HasilJurnal = {
     kegiatan: "",
     kompetensi: "",
     durasi_jam: "1",
-    catatan_murid: "",
   },
 };
 
@@ -98,25 +97,6 @@ export default function FormJurnal() {
           type="number"
         />
         <Galat teks={hasil.galat.durasi_jam} />
-      </div>
-
-      <div>
-        <label
-          className="mb-1 block text-sm font-medium"
-          htmlFor="catatan_murid"
-        >
-          Catatan pribadi{" "}
-          <span className="font-normal text-slate-500">(opsional)</span>
-        </label>
-        <textarea
-          className={kolom}
-          defaultValue={i.catatan_murid}
-          id="catatan_murid"
-          name="catatan_murid"
-          placeholder="Catatan tambahan"
-          rows={3}
-        />
-        <Galat teks={hasil.galat.catatan_murid} />
       </div>
 
       {hasil.pesan && (

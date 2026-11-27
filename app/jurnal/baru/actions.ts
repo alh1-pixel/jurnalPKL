@@ -13,14 +13,12 @@ export type HasilJurnal = {
     kegiatan?: string;
     kompetensi?: string;
     durasi_jam?: string;
-    catatan_murid?: string;
   };
   isian: {
     tanggal: string;
     kegiatan: string;
     kompetensi: string;
     durasi_jam: string;
-    catatan_murid: string;
   };
 };
 
@@ -84,7 +82,6 @@ export async function simpanJurnal(
     kegiatan: ambilTeks(formData, "kegiatan"),
     kompetensi: ambilTeks(formData, "kompetensi"),
     durasi_jam: ambilTeks(formData, "durasi_jam"),
-    catatan_murid: ambilTeks(formData, "catatan_murid"),
   };
 
   const galat: HasilJurnal["galat"] = {};
@@ -127,7 +124,6 @@ export async function simpanJurnal(
     kompetensi: isian.kompetensi,
     durasi_jam: Number(isian.durasi_jam),
     status: "diajukan",
-    catatan_murid: isian.catatan_murid || null,
   });
 
   if (error?.code === "23505") {
