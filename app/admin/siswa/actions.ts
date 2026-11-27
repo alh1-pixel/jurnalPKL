@@ -51,6 +51,62 @@ export async function tambahSiswa(formData: FormData) {
   redirect("/admin/siswa?hasil=ditambahkan");
 }
 
+export async function ubahSiswa(formData: FormData) {
+  await pastikanAdmin();
+
+  const siswaId = Number(ambilTeks(formData, "siswaId"));
+  const nama = ambilTeks(formData, "nama");
+  const kelas = ambilTeks(formData, "kelas");
+  const tempatPkl = ambilTeks(formData, "tempat_pkl");
+  const pembimbing = ambilTeks(formData, "pembimbing");
+  const kode = ambilTeks(formData, "kode").toUpperCase();
+
+  if (
+    !Number.isSafeInteger(siswaId) ||
+    siswaId <= 0 ||
+    !nama ||
+    nama.length > 100 ||
+    !kelas ||
+    kelas.length > 50 ||
+    !tempatPkl ||
+    tempatPkl.length > 150 ||
+    !pembimbing ||
+    pembimbing.length > 100 ||
+    (kode !== "" && !/^[A-Z0-9-]{6,12}$/.test(kode))
+  ) {
+    redirect("/admin/siswa?hasil=data-tidak-valid");
+  }
+
+  const { data, error } = await supabaseAdmin
+    .from("siswa")
+    .update({
+      nama,
+      kelas,
+      tempat_pkl: tempatPkl,
+      pembimbing,
+      ...(kode ? { kode } : {}),
+    })
+    .eq("id", siswaId)
+    .select("id")
+    .maybeSingle();
+
+  if (error?.code === "23505") {
+    redirect("/admin/siswa?hasil=kode-dipakai");
+  }
+
+  if (error) {
+    throw new Error(`Gagal memperbarui data siswa: ${error.message}`);
+  }
+
+  if (!data) {
+    redirect("/admin/siswa?hasil=tidak-ditemukan");
+  }
+
+  revalidatePath("/admin");
+  revalidatePath("/admin/siswa");
+  redirect("/admin/siswa?hasil=diubah");
+}
+
 type HasilHapusSiswa = {
   pesan: string;
   berhasil: boolean;

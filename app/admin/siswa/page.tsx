@@ -14,6 +14,7 @@ type Props = {
 
 const pesanHasil: Record<string, string> = {
   ditambahkan: "Data siswa berhasil ditambahkan.",
+  diubah: "Data siswa berhasil diperbarui.",
   dihapus: "Data siswa berhasil dihapus.",
   "kode-dipakai": "Kode login sudah digunakan. Pilih kode lain.",
   "data-tidak-valid": "Periksa kembali data yang dimasukkan.",

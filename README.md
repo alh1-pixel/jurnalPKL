@@ -1,36 +1,151 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Jurnal PKL
 
-## Getting Started
+Website untuk membantu siswa mencatat kegiatan Praktik Kerja Lapangan (PKL), melihat status jurnal, dan membantu admin melakukan peninjauan.
 
-First, run the development server:
+## Informasi proyek
+
+- **Nama aplikasi:** JurnalKu
+- **Repository:** [masukkan tautan repository GitHub]
+- **Website:** [masukkan tautan deployment, atau tulis Belum dideploy]
+- **Pembuat:** [nama dan kelas]
+
+## Teknologi
+
+- Next.js
+- TypeScript
+- Tailwind CSS
+- Supabase
+
+## Fitur dan halaman
+
+| Rute                | Fungsi                                              |
+| ------------------- | --------------------------------------------------- |
+| `/`                 | Beranda dan tautan ke halaman masuk                 |
+| `/masuk`            | Masuk sebagai siswa menggunakan kode siswa          |
+| `/jurnal`           | Melihat jurnal, ringkasan durasi/status, dan keluar |
+| `/jurnal/baru`      | Membuat jurnal baru                                 |
+| `/jurnal/[id]/ubah` | Mengubah jurnal yang belum disetujui                |
+| `/login`            | Masuk sebagai admin                                 |
+| `/admin`            | Ringkasan data dan peninjauan jurnal                |
+| `/admin/siswa`      | Menambah, mengubah, dan menghapus data siswa        |
+
+## Persiapan
+
+### Persyaratan
+
+- Node.js dan npm
+- Proyek Supabase yang sudah dikonfigurasi
+
+### Instalasi dependensi
+
+```bash
+npm install
+```
+
+### Environment variables
+
+Buat file `.env.local` di folder utama proyek:
+
+```env
+SUPABASE_URL=
+SUPABASE_SECRET_KEY=
+SESSION_SECRET=
+ADMIN_PASSWORD=
+```
+
+Isi nilainya secara lokal sesuai konfigurasi. Jangan mencantumkan nilai rahasia di README atau commit `.env.local` ke repository.
+
+### Menjalankan aplikasi
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Buka `http://localhost:3000`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Pemeriksaan kode
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run lint
+npx tsc --noEmit
+npm run build
+```
 
-## Learn More
+Catat hasil yang benar-benar diperoleh. Jangan menuliskan pemeriksaan berhasil jika belum dijalankan.
 
-To learn more about Next.js, take a look at the following resources:
+## Struktur database
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Aplikasi menggunakan tabel berikut:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### `siswa`
 
-## Deploy on Vercel
+Kolom yang digunakan aplikasi: `id`, `nama`, `kelas`, `tempat_pkl`, `pembimbing`, dan `kode`.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### `jurnal`
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Kolom yang digunakan aplikasi: `id`, `siswa_id`, `tanggal`, `kegiatan`, `kompetensi`, `durasi_jam`, `status`, `catatan`, dan `dibuat`.
+
+`jurnal.siswa_id` mengacu pada `siswa.id`. Sesuaikan dokumentasi ini dengan skema aktual di Supabase.
+
+Pastikan database memiliki constraint yang diperlukan, termasuk kode siswa unik dan satu jurnal per siswa untuk tanggal yang sama.
+
+## Aturan bisnis dan validasi
+
+- Tanggal jurnal adalah hari ini atau maksimal 7 hari sebelumnya.
+- Kegiatan berisi 30–500 karakter.
+- Kompetensi berisi 3–60 karakter.
+- Durasi berupa bilangan bulat 1–10 jam.
+- Satu siswa hanya boleh memiliki satu jurnal pada tanggal yang sama.
+- Status jurnal adalah `diajukan`, `disetujui`, atau `revisi`.
+- Catatan revisi admin minimal 5 karakter.
+- Siswa hanya dapat mengubah jurnal yang belum disetujui.
+- Siswa hanya boleh mengakses jurnal miliknya sendiri.
+
+Validasi dilakukan di server. Validasi pada elemen formulir di browser hanya membantu pengguna; bukan pengganti validasi server.
+
+## Akses dan keamanan
+
+- Halaman dan Server Actions admin memeriksa sesi admin.
+- Identitas siswa diambil dari sesi, bukan dipercaya dari input pengguna.
+- Kunci Supabase dan password admin disimpan sebagai environment variables.
+- `SUPABASE_SECRET_KEY` hanya digunakan di server dan memiliki hak akses tinggi. Jangan mengekspos atau membagikan nilainya.
+- Karena secret key Supabase dapat melewati RLS, operasi data harus tetap dibatasi melalui pemeriksaan sesi dan kepemilikan di server.
+
+## Data contoh dan pengujian
+
+- Jumlah data siswa contoh: [isi jumlah; tugas meminta minimal 5 jika itu ketentuan pada lembar tugas]
+- Jumlah jurnal contoh: [isi jumlah; tugas meminta minimal 12 jika itu ketentuan pada lembar tugas]
+- Gunakan data fiktif, bukan data pribadi nyata.
+
+Skenario yang diuji:
+
+- [ ] Login siswa dengan kode benar dan salah
+- [ ] Siswa hanya melihat jurnal miliknya
+- [ ] Pembuatan jurnal dengan data valid
+- [ ] Penolakan tanggal, durasi, atau panjang teks yang tidak valid
+- [ ] Penolakan jurnal ganda pada tanggal yang sama
+- [ ] Admin menyetujui jurnal dan meminta revisi
+- [ ] Catatan revisi terlihat oleh siswa
+- [ ] Admin menambah, mengubah, dan menghapus siswa
+- [ ] Siswa yang memiliki jurnal tidak dapat dihapus
+- [ ] Logout dan akses langsung ke halaman yang dilindungi
+
+Hasil pemeriksaan:
+
+- `npm run lint`: [belum dijalankan / hasil]
+- `npx tsc --noEmit`: [belum dijalankan / hasil]
+- `npm run build`: [belum dijalankan / hasil]
+
+## Kendala dan pekerjaan tersisa
+
+- Kendala yang ditemukan: [tulis kendala nyata dan cara mengatasinya]
+- Pekerjaan tersisa: [tulis yang belum selesai, atau Tidak ada jika memang selesai]
+
+## Rencana dan progres
+
+| Tahap                       | Status   |
+| --------------------------- | -------- |
+| Halaman dan alur siswa      | [status] |
+| Panel dan pengelolaan admin | [status] |
+| Pengujian                   | [status] |
+| Deployment                  | [status] |
